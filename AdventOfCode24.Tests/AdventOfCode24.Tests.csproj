@@ -24,4 +24,6 @@
       <ProjectReference Include="..\AdventOfCode24\AdventOfCode24.csproj" />
     </ItemGroup>
 
+    
+
 </Project>
