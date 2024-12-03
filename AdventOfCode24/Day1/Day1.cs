@@ -2,9 +2,9 @@
 
 namespace AdventOfCode24.Day1;
 
-public static class DayOne
+public static class Day1
 {
-    static async Task<(int, int)> SeparateList(string? line)
+    static (int, int) SeparateList(string line)
     {
         int[] nums = line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
             .Select(int.Parse)
@@ -18,8 +18,8 @@ public static class DayOne
     {
         IdLists idLists = new()
         {
-            LeftList = new List<int>(),
-            RightList = new List<int>()
+            LeftList = [],
+            RightList = []
         };
         int difference = 0;
 
@@ -45,8 +45,8 @@ public static class DayOne
     {
         IdLists idLists = new()
         {
-            LeftList = new List<int>(),
-            RightList = new List<int>()
+            LeftList = [],
+            RightList = []
         };
         int similarityScore = 0;
 

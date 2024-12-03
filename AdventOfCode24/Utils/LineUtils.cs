@@ -10,18 +10,33 @@ public static class LineUtils
     /// <param name="filename">The file's name.</param>
     /// <param name="processLine">The function to process each file line with.</param>
     /// <param name="handleResult">The function to handle the result of each processed line.</param>
-    public static async Task ProcessFileLinesAsync<T>(string directoryName, string filename, Func<string?, Task<T>> processLine, Func<T, T> handleResult)
+    public static async Task ProcessFileLinesAsync<T>(string directoryName, string filename, Func<string, Task<T>> processLine, Func<T, T> handleResult)
     {
         try
         {
-            using StreamReader sr = new($"{GetWorkingDirectory()}{directoryName}/{filename}");
-            var line = await sr.ReadLineAsync();
+            var lines = await File.ReadAllLinesAsync(GetWorkingDirectory() + directoryName + "/" + filename);
 
-            while (line != null)
+            foreach (var line in lines)
             {
                 var res = await processLine(line);
                 handleResult(res);
-                line = await sr.ReadLineAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Exception: " + e.Message);
+        }
+    }
+    public static async Task ProcessFileLinesAsync<T>(string directoryName, string filename, Func<string, T> processLine, Func<T, T> handleResult)
+    {
+        try
+        {
+            var lines = await File.ReadAllLinesAsync(GetWorkingDirectory() + directoryName + "/" + filename);
+
+            foreach (var line in lines)
+            {
+                var res = processLine(line);
+                handleResult(res);
             }
         }
         catch (Exception e)
@@ -30,18 +45,33 @@ public static class LineUtils
         }
     }
     
-    public static async Task ProcessFileLinesAsync<T>(string directoryName, string filename, Func<string?, Task<T>> processLine, Action<T> handleResult)
+    public static async Task ProcessFileLinesAsync<T>(string directoryName, string filename, Func<string, Task<T>> processLine, Action<T> handleResult)
     {
         try
         {
-            using StreamReader sr = new($"{GetWorkingDirectory()}{directoryName}/{filename}");
-            var line = await sr.ReadLineAsync();
+            var lines = await File.ReadAllLinesAsync(GetWorkingDirectory() + directoryName + "/" + filename);
 
-            while (line != null)
+            foreach (var line in lines)
             {
                 var res = await processLine(line);
                 handleResult(res);
-                line = await sr.ReadLineAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Exception: " + e.Message);
+        }
+    }
+    public static async Task ProcessFileLinesAsync<T>(string directoryName, string filename, Func<string, T> processLine, Action<T> handleResult)
+    {
+        try
+        {
+            var lines = await File.ReadAllLinesAsync(GetWorkingDirectory() + directoryName + "/" + filename);
+
+            foreach (var line in lines)
+            {
+                var res = processLine(line);
+                handleResult(res);
             }
         }
         catch (Exception e)

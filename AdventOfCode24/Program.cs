@@ -1,4 +1,5 @@
-﻿using AdventOfCode24.Day1;
+﻿
+using AdventOfCode24.Day2;
 
-var res = await DayOne.PartTwoAsync();
+var res = await Day2.PartTwoAsync();
 Console.WriteLine(res);
