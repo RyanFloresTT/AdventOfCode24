@@ -7,21 +7,7 @@ public static class Day2
     static int CountLineSafetyPartOne(string line)
     {
         List<int> numbers = line.Split(" ").Select(int.Parse).ToList();
-
-        bool isInitialDifferenceNegative = numbers[1] - numbers[0] < 0;
-
-        for (int i = 1; i < numbers.Count; i++)
-        {
-            int difference = numbers[i] - numbers[i - 1];
-            bool isCurrentDifferenceNegative = difference < 0;
-
-            if (Math.Abs(difference) > 3 || Math.Abs(difference) == 0 || isCurrentDifferenceNegative != isInitialDifferenceNegative)
-            {
-                return 0;
-            }
-        }
-
-        return 1;
+        return IsValidSequence(numbers) ? 1 : 0;
     }
 
     public static async Task<int> PartOneAsync(string filename = "input.txt")
@@ -37,30 +23,34 @@ public static class Day2
     {
         List<int> numbers = line.Split(" ").Select(int.Parse).ToList();
 
-        bool hasForgiven = false;
+        if (IsValidSequence(numbers)) return 1;
+
+        for (int i = 0; i < numbers.Count; i++)
+        {
+            var modifiedNumbers = numbers.Where((_, index) => index != i).ToList();
+            if (IsValidSequence(modifiedNumbers)) return 1;
+        }
+
+        return 0;
+    }
+
+    
+    static bool IsValidSequence(List<int> numbers)
+    {
         bool isInitialDifferenceNegative = numbers[1] - numbers[0] < 0;
 
         for (int i = 1; i < numbers.Count; i++)
         {
             int difference = numbers[i] - numbers[i - 1];
             bool isCurrentDifferenceNegative = difference < 0;
-            
-            Console.WriteLine($"Comparing {numbers[i]} - {numbers[i - 1]}");
 
-            if (Math.Abs(difference) <= 3 && Math.Abs(difference) != 0 &&
-                isCurrentDifferenceNegative == isInitialDifferenceNegative)
+            if (Math.Abs(difference) > 3 || Math.Abs(difference) == 0 || isCurrentDifferenceNegative != isInitialDifferenceNegative)
             {
-                continue;
+                return false;
             }
-
-            if (hasForgiven) return 0;
-            
-            numbers.RemoveAt(i);
-            hasForgiven = true;
-            i--;
         }
 
-        return 1;
+        return true;
     }
 
     public static async Task<int> PartTwoAsync(string filename = "input.txt")
